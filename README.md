@@ -18,13 +18,22 @@ npm run dev
 
 Use browser-safe Supabase values only (URL + anon/publishable key). Never put the service role key in this app.
 
+Vite env names used by the app:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY` (fallback: `VITE_SUPABASE_ANON_KEY`)
+
 ## Production
 
 GitHub Pages deploys from `main` via `.github/workflows/pages.yml`.
 
-Required repository variables/secrets for the workflow:
+Required GitHub Actions configuration (same hosted Supabase project as
+`learning-platform-admin`):
 
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_PUBLISHABLE_KEY` (or anon key)
+- Repository variable `VITE_SUPABASE_URL`
+- Repository secret `VITE_SUPABASE_PUBLISHABLE_KEY`
+
+The workflow maps those into the Vite build. Without them, production shows
+**Not configured**.
 
 Admin creates sessions in Learning Platform Admin → **Group Generator**.
