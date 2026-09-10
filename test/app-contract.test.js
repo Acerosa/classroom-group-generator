@@ -7,8 +7,11 @@ test("student app stays anonymous and uses only api RPCs", async () => {
   assert.match(source, /join_grouping_session/);
   assert.match(source, /my_grouping_status/);
   assert.match(source, /schema: "api"/);
+  assert.match(source, /Your role/);
+  assert.match(source, /roleTitle/);
   assert.doesNotMatch(source, /service_role|admin_api|generate_grouping|publish_grouping/i);
   assert.doesNotMatch(source, /signIn|password|email/i);
+  assert.doesNotMatch(source, /set_grouping_participant_role/);
 });
 
 test("package does not ship backend secrets tooling", async () => {

@@ -133,16 +133,44 @@ function renderAwaitingAssignment(displayName) {
 
 function renderAssigned(status) {
   const teammates = Array.isArray(status.teammates) ? status.teammates : [];
+  const roleTitle = status.roleTitle ? String(status.roleTitle) : "";
+  const teammateRows = teammates
+    .map((entry) => {
+      if (typeof entry === "string") {
+        return {
+          displayName: entry,
+          roleTitle: "",
+        };
+      }
+      if (entry && typeof entry === "object") {
+        return {
+          displayName: String(entry.displayName || ""),
+          roleTitle: entry.roleTitle ? String(entry.roleTitle) : "",
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
+
   render(`
     <section class="card reveal" aria-live="polite">
       <div class="reveal__mark" aria-hidden="true">🎉</div>
       <p class="eyebrow">You’re in</p>
       <h1 class="group-name">${escapeHtml(status.groupName || "Your group")}</h1>
+      ${
+        roleTitle
+          ? `<p class="your-role"><span class="your-role__label">Your role</span><span class="your-role__value">${escapeHtml(roleTitle)}</span></p>`
+          : ""
+      }
+      <p class="team-heading">Team members</p>
       <ul class="teammates">
-        ${teammates
-          .map((name) => {
-            const yours = name === status.displayName;
-            return `<li class="${yours ? "is-you" : ""}">${escapeHtml(name)}${yours ? ' <span class="sr-only">(you)</span>' : ""}</li>`;
+        ${teammateRows
+          .map((member) => {
+            const yours = member.displayName === status.displayName;
+            const roleBit = member.roleTitle
+              ? ` <span class="member-role">— ${escapeHtml(member.roleTitle)}</span>`
+              : "";
+            return `<li class="${yours ? "is-you" : ""}"><span class="member-name">${escapeHtml(member.displayName)}</span>${roleBit}${yours ? ' <span class="sr-only">(you)</span>' : ""}</li>`;
           })
           .join("")}
       </ul>

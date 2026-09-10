@@ -6,7 +6,11 @@ Students open a teacher-provided link such as:
 
 `https://acerosa.github.io/classroom-group-generator/?s=ABC123`
 
-They enter their name, wait, and see their published group. There is no login.
+They enter their name, wait, and see their published group and role. There is no login.
+
+When the teacher enables a specialist role for the session, published results
+show each learner’s role (Project Manager, Tester, or the session specialist
+title such as Cyber Security Analyst) plus their teammates’ roles.
 
 ## Local development
 
