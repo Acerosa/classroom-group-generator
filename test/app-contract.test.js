@@ -16,3 +16,16 @@ test("package does not ship backend secrets tooling", async () => {
   assert.equal(pkg.name, "classroom-group-generator");
   assert.ok(pkg.dependencies["@supabase/supabase-js"]);
 });
+
+test("Pages workflow injects browser-safe Vite Supabase configuration", async () => {
+  const workflow = await readFile(
+    new URL("../.github/workflows/pages.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(workflow, /VITE_SUPABASE_URL:\s*\$\{\{\s*vars\.VITE_SUPABASE_URL\s*\}\}/);
+  assert.match(
+    workflow,
+    /VITE_SUPABASE_PUBLISHABLE_KEY:\s*\$\{\{\s*secrets\.VITE_SUPABASE_PUBLISHABLE_KEY\s*\}\}/,
+  );
+  assert.doesNotMatch(workflow, /SERVICE_ROLE|sb_secret_/);
+});
